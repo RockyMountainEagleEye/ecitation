@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Citation Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="header">
+        <img src="{{ url_for('static', filename='morrison_logo.png') }}" alt="Morrison Police Department Logo" class="logo">
+        <p>Logged in as {{ session['user'] }} | <a href="{{ url_for('logout') }}">Logout</a></p>
+        <p><a href="{{ url_for('view_citations') }}">Back to Citations</a></p>
+    </div>
+    <h1>Citation Details</h1>
+    <form method="POST">
+        <fieldset>
+            <legend>Officer Notes</legend>
+            <textarea name="officerNotes" rows="5" cols="50">{{ data.get('officerNotes', '') }}</textarea>
+        </fieldset>
+        <button type="submit">Save Notes</button>
+    </form>
+</body>
+</html>

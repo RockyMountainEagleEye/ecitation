@@ -1,0 +1,159 @@
+<!-- templates/analytics.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analytics Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="header">
+        <img src="{{ url_for('static', filename='morrison_logo.png') }}" alt="Morrison Police Department Logo" class="logo">
+        <nav>
+            <span>Logged in as {{ session['user'] }} (Supervisor)</span> |
+            <a href="{{ url_for('logout') }}">Logout</a> |
+            <a href="{{ url_for('view_all_citations') }}">View All Citations</a>
+        </nav>
+    </div>
+
+    <main>
+        <h1>Analytics Dashboard</h1>
+
+        {% if no_data %}
+            <p>No citation data available to display analytics.</p>
+        {% else %}
+            <!-- Tabs Navigation -->
+            <div class="tabs">
+                <button class="tablinks" onclick="openTab(event, 'OfficerChart')" id="defaultOpen">Citations by Officer</button>
+                <button class="tablinks" onclick="openTab(event, 'InfractionChart')">Citations by Infraction</button>
+                <button class="tablinks" onclick="openTab(event, 'TimeChart')">Citations by Time of Day</button>
+                <button class="tablinks" onclick="openTab(event, 'LocationChart')">Citations by Location</button>
+            </div>
+
+            <!-- Tabs Content -->
+            <div id="OfficerChart" class="tabcontent">
+                <h2>Citations by Officer</h2>
+                <canvas id="officerChartCanvas"></canvas>
+            </div>
+
+            <div id="InfractionChart" class="tabcontent">
+                <h2>Citations by Infraction</h2>
+                <canvas id="infractionChartCanvas"></canvas>
+            </div>
+
+            <div id="TimeChart" class="tabcontent">
+                <h2>Citations by Time of Day</h2>
+                <canvas id="timeChartCanvas"></canvas>
+            </div>
+
+            <div id="LocationChart" class="tabcontent">
+                <h2>Citations by Location</h2>
+                <canvas id="locationChartCanvas"></canvas>
+            </div>
+
+            <script>
+                // Function to open tabs
+                function openTab(evt, tabName) {
+                    var i, tabcontent, tablinks;
+                    tabcontent = document.getElementsByClassName("tabcontent");
+                    for (i = 0; i < tabcontent.length; i++) {
+                        tabcontent[i].style.display = "none";
+                    }
+                    tablinks = document.getElementsByClassName("tablinks");
+                    for (i = 0; i < tablinks.length; i++) {
+                        tablinks[i].className = tablinks[i].className.replace(" active", "");
+                    }
+                    document.getElementById(tabName).style.display = "block";
+                    evt.currentTarget.className += " active";
+                }
+
+                // Set default tab
+                document.getElementById("defaultOpen").click();
+
+                // Officer Chart
+                const officerCtx = document.getElementById('officerChartCanvas').getContext('2d');
+                new Chart(officerCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: {{ officer_data.labels | safe }},
+                        datasets: [{
+                            label: 'Citations',
+                            data: {{ officer_data.data | safe }},
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)'
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+
+                // Infraction Chart
+                const infractionCtx = document.getElementById('infractionChartCanvas').getContext('2d');
+                new Chart(infractionCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: {{ infraction_data.labels | safe }},
+                        datasets: [{
+                            label: 'Citations',
+                            data: {{ infraction_data.data | safe }},
+                            backgroundColor: 'rgba(255, 99, 132, 0.6)'
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+
+                // Time Chart
+                const timeCtx = document.getElementById('timeChartCanvas').getContext('2d');
+                new Chart(timeCtx, {
+                    type: 'line',
+                    data: {
+                        labels: {{ time_data.labels | safe }},
+                        datasets: [{
+                            label: 'Citations',
+                            data: {{ time_data.data | safe }},
+                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                            fill: false,
+                            borderColor: 'rgba(75, 192, 192, 1)'
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+
+                // Location Chart
+                const locationCtx = document.getElementById('locationChartCanvas').getContext('2d');
+                new Chart(locationCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: {{ location_data.labels | safe }},
+                        datasets: [{
+                            data: {{ location_data.data | safe }},
+                            backgroundColor: [
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(54, 162, 235, 0.6)',
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(75, 192, 192, 0.6)'
+                            ]
+                        }]
+                    }
+                });
+            </script>
+        {% endif %}
+    </main>
+
+    <footer>
+        <p>&copy; {{ datetime.now().year }} Morrison Police Department</p>
+    </footer>
+</body>
+</html>

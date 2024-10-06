@@ -1,0 +1,64 @@
+<!-- templates/citations.html -->
+{% extends 'base.html' %}
+
+{% block title %}My Citations{% endblock %}
+
+{% block content %}
+<h1>My Citations</h1>
+
+{% if citations %}
+    <table>
+        <thead>
+            <tr>
+                <th>Ticket Number</th>
+                <th>Date Issued</th>
+                <th>Time</th>
+                <th>Defendant Name</th>
+                <th>Charge(s)</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket_number, data in citations %}
+                <tr>
+                    <td>{{ ticket_number }}</td>
+                    <td>{{ data.get('issueDate', '') | format_date }}</td>
+                    <td>{{ data.get('timeOfStop', '') | format_time }}</td>
+                    <td>{{ data.get('defendant', {}).get('last_name', '') }}, {{ data.get('defendant', {}).get('first_name', '') }}</td>
+                    <td>
+                        {% if data.get('violations') and data['violations'] %}
+                            <ul>
+                                {% for violation in data['violations'] %}
+                                    <li>{{ violation.get('violation', 'N/A') }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if data.get('isVoided') %}
+                            <span class="status-voided">VOIDED</span>
+                        {% elif data.get('isModified') %}
+                            <span class="status-modified">MODIFIED</span>
+                        {% else %}
+                            <span class="status-active">Active</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ url_for('view_citation', ticket_number=ticket_number) }}">View</a>
+                        {% if data['badgeNumber'] == session['badge_number'] or session['role'] == 'supervisor' %}
+                            | <a href="{{ url_for('modify_citation', ticket_number=ticket_number) }}">Modify/Void</a>
+                            | <a href="{{ url_for('add_notes', ticket_number=ticket_number) }}">Add Notes</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No citations found.</p>
+{% endif %}
+
+{% endblock %}

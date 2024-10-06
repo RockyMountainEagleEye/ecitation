@@ -1,0 +1,45 @@
+<!-- templates/add_notes.html -->
+{% extends 'base.html' %}
+
+{% block title %}Add Notes to Citation{% endblock %}
+
+{% block content %}
+<h1>Add Notes to Citation</h1>
+
+<form method="POST">
+    <p><strong>Ticket Number:</strong> {{ data.get('ticketNumber') }}</p>
+    <p><strong>Defendant Name:</strong> {{ data['defendant'].get('first_name', '') }} {{ data['defendant'].get('last_name', '') }}</p>
+
+    <label for="attitude">Defendant's Attitude:</label>
+    <input type="text" name="attitude" id="attitude">
+
+    <label for="road">Road Condition:</label>
+    <input type="text" name="road" id="road">
+
+    <label for="sky">Sky Condition:</label>
+    <input type="text" name="sky" id="sky">
+
+    <label for="radar_laser">Radar/Laser Used:</label>
+    <input type="text" name="radar_laser" id="radar_laser">
+
+    <label for="officer_unit_number">Officer Unit Number:</label>
+    <input type="text" name="officer_unit_number" id="officer_unit_number">
+
+    <label for="officer_laser_number">Officer Laser Number:</label>
+    <input type="text" name="officer_laser_number" id="officer_laser_number">
+
+    <label for="sn_fork_25">SN Fork 25:</label>
+    <input type="text" name="sn_fork_25" id="sn_fork_25">
+
+    <label for="sn_fork_50">SN Fork 50:</label>
+    <input type="text" name="sn_fork_50" id="sn_fork_50">
+
+    <label for="sn_fork_75">SN Fork 75:</label>
+    <input type="text" name="sn_fork_75" id="sn_fork_75">
+
+    <label for="officer_notes">Additional Notes:</label>
+    <textarea name="officer_notes" id="officer_notes"></textarea>
+
+    <button type="submit">Submit Notes</button>
+</form>
+{% endblock %}

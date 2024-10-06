@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Details to Citation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="header">
+        <img src="{{ url_for('static', filename='morrison_logo.png') }}" alt="Morrison Police Department Logo" class="logo">
+        <p>Logged in as {{ session['user'] }} | <a href="{{ url_for('logout') }}">Logout</a></p>
+        <p><a href="{{ url_for('view_citations') }}">Back to Citations</a></p>
+    </div>
+    <h1>Add Details to Citation {{ data['ticketNumber'] }}</h1>
+    <form method="POST">
+        <!-- Additional Fields -->
+        <fieldset>
+            <legend>Conditions and Equipment</legend>
+            <label>
+                Attitude:
+                <input type="text" name="attitude" value="{{ data.get('attitude', '') }}">
+            </label>
+            <label>
+                Speed:
+                <input type="text" name="speed_condition" value="{{ data.get('speed_condition', '') }}">
+            </label>
+            <label>
+                Road:
+                <input type="text" name="road" value="{{ data.get('road', '') }}">
+            </label>
+            <label>
+                Sky:
+                <input type="text" name="sky" value="{{ data.get('sky', '') }}">
+            </label>
+            <label>
+                Radar or Laser:
+                <input type="text" name="radar_laser" value="{{ data.get('radar_laser', '') }}">
+            </label>
+            <label>
+                Officer Unit Number:
+                <input type="text" name="officer_unit_number" value="{{ data.get('officer_unit_number', '') }}">
+            </label>
+            <label>
+                Officer Laser Number:
+                <input type="text" name="officer_laser_number" value="{{ data.get('officer_laser_number', '') }}">
+            </label>
+            <label>
+                S/N Fork 25mph:
+                <input type="text" name="sn_fork_25" value="{{ data.get('sn_fork_25', '') }}">
+            </label>
+            <label>
+                S/N Fork 50mph:
+                <input type="text" name="sn_fork_50" value="{{ data.get('sn_fork_50', '') }}">
+            </label>
+            <label>
+                S/N Fork 75mph:
+                <input type="text" name="sn_fork_75" value="{{ data.get('sn_fork_75', '') }}">
+            </label>
+        </fieldset>
+        <button type="submit">Save Details</button>
+    </form>
+</body>
+</html>

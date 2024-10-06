@@ -1,0 +1,36 @@
+<!-- templates/modify_citation.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Modify or Void Citation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="header">
+        <img src="{{ url_for('static', filename='images/morrison_logo.png') }}" alt="Morrison Police Department Logo" class="logo">
+        <h1>Modify or Void Citation</h1>
+        <p>Citation #: {{ data['ticketNumber'] }}</p>
+    </div>
+
+    <form method="POST">
+        <fieldset>
+            <legend>Modification Details</legend>
+            <label for="reason">Reason for Modification or Voiding:</label>
+            <textarea id="reason" name="reason" rows="4" required>{{ data.get('modificationReason', '') }}</textarea>
+
+            <label for="void">
+                <input type="checkbox" id="void" name="void" {% if data.get('isVoided') %}checked{% endif %}>
+                Void this citation
+            </label>
+        </fieldset>
+
+        <button type="submit">Submit Modification</button>
+    </form>
+
+    <div class="no-print">
+        <a href="{{ url_for('view_citation', ticket_number=data['ticketNumber']) }}" class="button">Back to Citation</a>
+    </div>
+</body>
+</html>

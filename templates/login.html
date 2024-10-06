@@ -1,0 +1,28 @@
+<!-- templates/login.html -->
+{% extends 'base.html' %}
+
+{% block title %}Login - Morrison Police E-Citation System{% endblock %}
+
+{% block body %}
+<div class="login-container">
+    <div class="login-box">
+        <img src="{{ url_for('static', filename='images/morrison_logo.png') }}" alt="Morrison Police Department Logo" class="logo">
+        <h1>Officer Login</h1>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        <form method="POST">
+            <label for="badgeNumber">Badge Number:</label>
+            <input type="text" id="badgeNumber" name="badgeNumber" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+        <div class="company-info">
+            <p>&copy; {{ datetime.now().year }} Morrison Police Department</p>
+            <p>Developed by Eagle Eye Solutions, LLC</p>
+            <p>Contact: <a href="mailto:brichardson@morrisonco.us">brichardson@morrisonco.us</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

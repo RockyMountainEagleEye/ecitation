@@ -1,0 +1,79 @@
+<!-- templates/all_citations.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Citations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="header">
+        <img src="{{ url_for('static', filename='morrison_logo.png') }}" alt="Morrison Police Department Logo" class="logo">
+        <nav>
+            <span>Logged in as {{ session['user'] }} (Supervisor)</span> |
+            <a href="{{ url_for('logout') }}">Logout</a> |
+            <a href="{{ url_for('citation_form') }}">Create New Citation</a> |
+            <a href="{{ url_for('analytics_dashboard') }}">Analytics Dashboard</a>
+        </nav>
+    </div>
+
+    <main>
+        <h1>All Citations</h1>
+        {% if citations %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ticket Number</th>
+                        <th>Date Issued</th>
+                        <th>Time</th>
+                        <th>Officer</th>
+                        <th>Defendant Name</th>
+                        <th>Charge</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ticket_number, citation in citations %}
+                        <tr>
+                            <td>{{ ticket_number }}</td>
+                            <td>{{ citation.get('issueDate', '') | format_date }}</td>
+                            <td>{{ citation.get('timeOfStop', '') | format_time }}</td>
+                            <td>{{ citation.get('officerName', '') }}</td>
+                            <td>{{ citation.get('defendant', {}).get('last_name', '') }}, {{ citation.get('defendant', {}).get('first_name', '') }}</td>
+                            <td>
+                                {% if citation.get('violations') and citation['violations'] %}
+                                    {{ citation['violations'][0].get('violation', 'N/A') }}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if citation.get('isVoided') %}
+                                    <span class="status-voided">VOIDED</span>
+                                {% elif citation.get('isModified') %}
+                                    <span class="status-modified">MODIFIED</span>
+                                {% else %}
+                                    <span class="status-active">Active</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ url_for('view_citation', ticket_number=ticket_number) }}">View</a> |
+                                <a href="{{ url_for('modify_citation', ticket_number=ticket_number) }}">Modify/Void</a> |
+                                <a href="{{ url_for('add_notes', ticket_number=ticket_number) }}">Add Notes</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No citations found.</p>
+        {% endif %}
+    </main>
+
+    <footer>
+        <p>&copy; {{ current_year }} Morrison Police Department</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!-- templates/index.html -->
+{% extends 'base.html' %}
+
+{% block title %}E-Citation Ticket System{% endblock %}
+
+{% block head_extra %}
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<h1>E-Citation Ticket System</h1>
+<form id="citationForm" method="POST" enctype="multipart/form-data">
+    <!-- Case Information -->
+    <fieldset>
+        <legend>Case Information</legend>
+        <label>
+            Type:
+            <div>
+                <label><input type="checkbox" id="penaltyAssessment" name="citationType" value="Penalty Assessment"> Penalty Assessment</label>
+                <label><input type="checkbox" id="summonsComplaint" name="citationType" value="Summons & Complaint"> Summons & Complaint</label>
+            </div>
+        </label>
+        <label>
+            Case #:
+            <input type="text" id="caseNumber" name="caseNumber">
+        </label>
+        <label>
+            MRPD Court Case #:
+            <input type="text" id="mrpdCaseNumber" name="mrpdCaseNumber">
+        </label>
+    </fieldset>
+
+    <!-- Incident Information -->
+    <fieldset>
+        <legend>Incident Information</legend>
+        <!-- Date and Time -->
+        <label>
+            Date of Violation:
+            <input type="date" id="violationDate" name="violationDate" value="{{ datetime.now().strftime('%Y-%m-%d') }}" required>
+        </label>
+        <label>
+            Time of Violation:
+            <input type="time" id="timeOfStop" name="timeOfStop" required>
+        </label>
+        <label>
+            Approximate Location of Occurrence:
+            <input type="text" id="location" name="location" required>
+        </label>
+        <!-- Direction of Travel -->
+        <label>
+            Direction of Travel:
+            <select id="direction_of_travel" name="direction_of_travel" required>
+                <option value="NB">Northbound</option>
+                <option value="SB">Southbound</option>
+                <option value="EB">Eastbound</option>
+                <option value="WB">Westbound</option>
+            </select>
+        </label>
+        <!-- U.S. Citizen -->
+        <label>
+            U.S. Citizen:
+            <select id="us_citizen" name="us_citizen" required>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </label>
+        <!-- Additional Offenses -->
+        <label>
+            Additional Offenses:
+            <div>
+                <label><input type="checkbox" name="additional_offenses" value="Domestic Violence"> Domestic Violence</label>
+                <label><input type="checkbox" name="additional_offenses" value="Red Rocks"> Red Rocks</label>
+                <label><input type="checkbox" name="additional_offenses" value="DUI"> DUI</label>
+                <label><input type="checkbox" name="additional_offenses" value="DWAI"> DWAI</label>
+                <label><input type="checkbox" name="additional_offenses" value="DUID"> DUID</label>
+                <label><input type="checkbox" name="additional_offenses" value="Hit and Run"> Hit and Run</label>
+                <label><input type="checkbox" name="additional_offenses" value="Reckless Driving"> Reckless Driving</label>
+                <label><input type="checkbox" name="additional_offenses" value="Eluding"> Eluding</label>
+                <!-- Include other additional offenses as needed -->
+            </div>
+        </label>
+    </fieldset>
+
+    <!-- Driver Information -->
+    <fieldset>
+        <legend>Driver Information</legend>
+        <!-- PDF417 Barcode Input -->
+        <label for="barcodeData">Scan Driver's License Barcode (PDF417):</label>
+        <input type="text" name="barcodeData" id="barcodeData" placeholder="Scan barcode here">
+        <button type="button" onclick="decodeBarcode()">Decode</button>
+
+        <label>
+            Last Name:
+            <input type="text" id="lastName" name="lastName" required>
+        </label>
+        <label>
+            First Name:
+            <input type="text" id="firstName" name="firstName" required>
+        </label>
+        <label>
+            Middle Name:
+            <input type="text" id="middleName" name="middleName">
+        </label>
+        <label>
+            Date of Birth:
+            <input type="date" id="dob" name="dob" required>
+        </label>
+        <label>
+            Physical Address:
+            <input type="text" id="streetAddress" name="streetAddress" placeholder="Street Address" required>
+        </label>
+        <label>
+            City:
+            <input type="text" id="city" name="city" required>
+        </label>
+        <label>
+            State:
+            <input type="text" id="state" name="state" required>
+        </label>
+        <label>
+            Zip Code:
+            <input type="text" id="zipCode" name="zipCode" required>
+        </label>
+        <!-- Mailing Address Same -->
+        <label>
+            Mailing Address Same:
+            <label><input type="radio" name="mailing_address_same" value="Yes" checked> Yes</label>
+            <label><input type="radio" name="mailing_address_same" value="No"> No</label>
+        </label>
+        <div id="mailingAddressFields" style="display: none;">
+            <label>
+                Mailing Address:
+                <input type="text" id="mailingAddress" name="mailingAddress" placeholder="Mailing Street Address">
+            </label>
+            <label>
+                Mailing City:
+                <input type="text" id="mailingCity" name="mailingCity">
+            </label>
+            <label>
+                Mailing State:
+                <input type="text" id="mailingState" name="mailingState">
+            </label>
+            <label>
+                Mailing Zip Code:
+                <input type="text" id="mailingZipCode" name="mailingZipCode">
+            </label>
+        </div>
+        <label>
+            Phone Number:
+            <input type="tel" id="phoneNumber" name="phoneNumber">
+        </label>
+        <!-- Driver's License Number and State -->
+        <label>
+            Driver's License Number:
+            <input type="text" id="oln" name="oln">
+        </label>
+        <label>
+            State:
+            <input type="text" id="dl_state" name="dl_state">
+        </label>
+        <!-- Valid CO DL Yes/No Checkbox -->
+        <label>
+            Valid CO DL?
+            <label><input type="radio" name="valid_co_dl" value="Yes"> Yes</label>
+            <label><input type="radio" name="valid_co_dl" value="No"> No</label>
+        </label>
+        <!-- Additional Driver Details -->
+        <label>
+            License Class:
+            <input type="text" id="licenseClass" name="licenseClass">
+        </label>
+        <label>
+            Race:
+            <input type="text" id="race" name="race">
+        </label>
+        <label>
+            Sex:
+            <input type="text" id="sex" name="sex">
+        </label>
+        <label>
+            Height (in inches):
+            <input type="number" id="height" name="height">
+        </label>
+        <label>
+            Weight (in lbs):
+            <input type="number" id="weight" name="weight">
+        </label>
+        <label>
+            Hair Color:
+            <input type="text" id="hairColor" name="hairColor">
+        </label>
+        <label>
+            Eye Color:
+            <input type="text" id="eyeColor" name="eyeColor">
+        </label>
+    </fieldset>
+
+    <!-- Vehicle Information -->
+    <fieldset>
+        <legend>Vehicle Information</legend>
+        <!-- VIN and Auto-Population -->
+        <label>
+            VIN:
+            <input type="text" id="vin" name="vin">
+        </label>
+        <button type="button" onclick="decodeVIN()">Decode VIN</button>
+        <label>
+            Vehicle Year:
+            <input type="text" id="year" name="year">
+        </label>
+        <label>
+            Vehicle Make:
+            <input type="text" id="make" name="make">
+        </label>
+        <label>
+            Vehicle Model:
+            <input type="text" id="model" name="model">
+        </label>
+        <label>
+            Vehicle Color:
+            <input type="text" id="vehicle_color" name="vehicle_color">
+        </label>
+        <label>
+            License Plate Number:
+            <input type="text" id="licensePlate" name="licensePlate">
+        </label>
+        <label>
+            State:
+            <input type="text" id="plateState" name="plateState">
+        </label>
+        <label>
+            Registered Vehicle Ownership Same as Driver:
+            <input type="checkbox" id="ownershipSame" name="ownershipSame" checked>
+        </label>
+        <div id="ownerInfo" style="display: none;">
+            <label>
+                Registered Owner Name:
+                <input type="text" id="ownerName" name="ownerName">
+            </label>
+            <label>
+                Registered Owner Address:
+                <input type="text" id="ownerAddress" name="ownerAddress">
+            </label>
+        </div>
+    </fieldset>
+
+    <!-- Violations Section -->
+    <fieldset>
+        <legend>Violations</legend>
+        <div id="violationsContainer">
+            <!-- Violation templates will be inserted here -->
+        </div>
+        <button type="button" onclick="addViolation()">Add Violation</button>
+    </fieldset>
+
+    <!-- Defendant Photo -->
+    <fieldset>
+        <legend>Defendant Photo</legend>
+        <label>
+            Upload Photo:
+            <input type="file" id="photo" name="photo" accept="image/*">
+        </label>
+    </fieldset>
+
+    <!-- Submit -->
+    <button type="submit">Submit Citation</button>
+</form>
+
+<!-- Include JavaScript -->
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}

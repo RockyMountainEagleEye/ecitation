@@ -1,0 +1,49 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Morrison Police E-Citation System{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block head_extra %}{% endblock %}
+</head>
+<body>
+    {% block body %}
+    <div class="header">
+        <img src="{{ url_for('static', filename='images/morrison_logo.png') }}" alt="Morrison Police Department Logo" class="logo">
+        <nav>
+            {% if session.get('user') %}
+                <span>Logged in as {{ session['user'] }} {% if session['role'] == 'supervisor' %}(Supervisor){% endif %}</span> |
+                <a href="{{ url_for('logout') }}">Logout</a> |
+                <a href="{{ url_for('view_citations') }}">View My Citations</a>
+                {% if session['role'] == 'supervisor' %}
+                    | <a href="{{ url_for('view_all_citations') }}">View All Citations</a>
+                    | <a href="{{ url_for('analytics_dashboard') }}">Analytics Dashboard</a>
+                {% endif %}
+                | <a href="{{ url_for('search') }}">Search Citations</a>
+            {% endif %}
+        </nav>
+    </div>
+    <main>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <div class="company-info">
+            <p>&copy; {{ datetime.now().year }} Morrison Police Department</p>
+            <p>Developed by <a href="mailto:brandon@eagleeyesolutions.com">Eagle Eye Solutions</a></p>
+        </div>
+    </footer>
+    {% endblock %}
+    {% block scripts %}{% endblock %}
+</body>
+</html>

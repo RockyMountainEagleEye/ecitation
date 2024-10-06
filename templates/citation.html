@@ -1,0 +1,126 @@
+<!-- templates/citation.html -->
+{% extends 'base.html' %}
+
+{% block title %}Citation Details{% endblock %}
+
+{% block content %}
+<div class="citation-print">
+    <div style="display: flex; align-items: center; justify-content: center;">
+        <img src="{{ url_for('static', filename='images/morrison_logo.png') }}" alt="Morrison Police Department Logo" class="logo-print">
+        <h1 style="margin-left: 10px;">TOWN OF MORRISON</h1>
+    </div>
+    <h2>{{ data.get('citationType', []) | join(' & ') }}</h2>
+
+    {% if data.get('isModified') %}
+        <div class="status-box">
+            {% if data.get('isVoided') %}
+                <p class="status-voided"><strong>THIS CITATION HAS BEEN VOIDED</strong></p>
+            {% else %}
+                <p class="status-modified"><strong>THIS CITATION HAS BEEN MODIFIED</strong></p>
+            {% endif %}
+            <p>Reason: {{ data.get('modificationReason', 'Not provided') }}</p>
+            <p>Modified by: {{ data.get('modifiedBy', 'Unknown') }}</p>
+            <p>Modified on: {{ data.get('lastModifiedDate', 'Unknown') }}</p>
+        </div>
+    {% endif %}
+
+    <!-- Citation Details -->
+    <h3>Defendant Information</h3>
+    <p><strong>Name:</strong> {{ data['defendant'].get('first_name', '') }} {{ data['defendant'].get('middle_name', '') }} {{ data['defendant'].get('last_name', '') }}</p>
+    <p><strong>Date of Birth:</strong> {{ data['defendant'].get('dob', '') }}</p>
+    <p><strong>Age:</strong> {{ data.get('age', '') }}</p>
+    <p><strong>Address:</strong> {{ data['defendant']['physical_address'].get('street', '') }}, {{ data['defendant']['physical_address'].get('city', '') }}, {{ data['defendant']['physical_address'].get('state', '') }} {{ data['defendant']['physical_address'].get('zip', '') }}</p>
+    <p><strong>Phone:</strong> {{ data['defendant'].get('phone', '') }}</p>
+
+    <h3>Driver's License Information</h3>
+    <p><strong>License Number:</strong> {{ data['defendant'].get('driver_license_number', '') }}</p>
+    <p><strong>State:</strong> {{ data['defendant']['driver_details'].get('state', '') }}</p>
+    <p><strong>Class:</strong> {{ data['defendant']['driver_details'].get('class', '') }}</p>
+    <p><strong>Race:</strong> {{ data['defendant']['driver_details'].get('race', '') }}</p>
+    <p><strong>Sex:</strong> {{ data['defendant']['driver_details'].get('sex', '') }}</p>
+    <p><strong>Height:</strong> {{ data['defendant']['driver_details'].get('height_formatted', '') }}</p>
+    <p><strong>Weight:</strong> {{ data['defendant']['driver_details'].get('weight', '') }}</p>
+    <p><strong>Hair:</strong> {{ data['defendant']['driver_details'].get('hair', '') }}</p>
+    <p><strong>Eyes:</strong> {{ data['defendant']['driver_details'].get('eyes', '') }}</p>
+
+    <h3>Vehicle Information</h3>
+    <p><strong>Make:</strong> {{ data['vehicle_information']['vehicle_license'].get('make', '') }}</p>
+    <p><strong>Model:</strong> {{ data['vehicle_information']['vehicle_license'].get('model', '') }}</p>
+    <p><strong>Year:</strong> {{ data['vehicle_information']['vehicle_license'].get('vehicle_year', '') }}</p>
+    <p><strong>Color:</strong> {{ data['vehicle_information']['vehicle_license'].get('color', '') }}</p>
+    <p><strong>VIN:</strong> {{ data['vehicle_information']['vehicle_license'].get('vin', '') }}</p>
+    <p><strong>License Plate:</strong> {{ data['vehicle_information']['vehicle_license'].get('plate_number', '') }}</p>
+    <p><strong>State:</strong> {{ data['vehicle_information']['vehicle_license'].get('state', '') }}</p>
+    <p><strong>Registered Owner:</strong> {{ data['vehicle_information']['registered_owner'].get('name_and_address', '') }}</p>
+
+    <h3>Violation Information</h3>
+    <p><strong>Date of Violation:</strong> {{ data.get('issueDate', '') | format_date }}</p>
+    <p><strong>Time of Violation:</strong> {{ data.get('timeOfStop', '') | format_time }}</p>
+    <p><strong>Location:</strong> {{ data.get('approximate_location', '') }}</p>
+    <p><strong>Direction of Travel:</strong> {{ data.get('direction_of_travel', '') }}</p>
+    <p><strong>U.S. Citizen:</strong> {{ data.get('us_citizen', '') }}</p>
+    <p><strong>Additional Offenses:</strong> {{ data.get('additional_offenses', []) | join(', ') }}</p>
+
+    <h3>Violations</h3>
+    {% if data.get('violations') and data['violations'] %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Statute</th>
+                    <th>Description</th>
+                    <th>Code</th>
+                    <th>Fine Amount</th>
+                    <th>Points</th>
+                    <th>MPH Over Limit</th>
+                    <th>Summons Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for violation in data['violations'] %}
+                    <tr>
+                        <td>{{ violation.get('statute', '') }}</td>
+                        <td>{{ violation.get('violation', '') }}</td>
+                        <td>{{ violation.get('code', '') }}</td>
+                        <td>{{ violation.get('fine', '') }}</td>
+                        <td>{{ violation.get('points', '') }}</td>
+                        <td>{{ violation.get('mph_over_limit', '') }}</td>
+                        <td>{{ 'Yes' if violation.get('summons') else 'No' }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p><strong>Total Fine:</strong> ${{ data.get('total_fine', '') }}</p>
+    {% else %}
+        <p>No violations recorded.</p>
+    {% endif %}
+
+    <h3>Court Information</h3>
+    <p><strong>Court Location:</strong> {{ data['court_information'].get('court_location', '') }}</p>
+    <p><strong>Court Date:</strong> {{ data.get('courtDate', '') | format_date }}</p>
+    <p><strong>Court Time:</strong> {{ data.get('courtTime', '') }}</p>
+
+    <h3>Officer Information</h3>
+    <p><strong>Officer Name:</strong> {{ data.get('officerName', '') }}</p>
+    <p><strong>Badge Number:</strong> {{ data.get('badgeNumber', '') }}</p>
+
+    {% if data.get('ticket_notes') %}
+        <h3>Officer Notes</h3>
+        <p><strong>Attitude:</strong> {{ data['ticket_notes'].get('attitude', '') }}</p>
+        <p><strong>Road Condition:</strong> {{ data['ticket_notes'].get('road', '') }}</p>
+        <p><strong>Sky Condition:</strong> {{ data['ticket_notes'].get('sky', '') }}</p>
+        <p><strong>Radar/Laser:</strong> {{ data['ticket_notes'].get('radar_laser', '') }}</p>
+        <p><strong>Officer Unit Number:</strong> {{ data['ticket_notes'].get('officer_unit_number', '') }}</p>
+        <p><strong>Officer Laser Number:</strong> {{ data['ticket_notes'].get('officer_laser_number', '') }}</p>
+        <p><strong>SN Fork 25:</strong> {{ data['ticket_notes'].get('sn_fork_25', '') }}</p>
+        <p><strong>SN Fork 50:</strong> {{ data['ticket_notes'].get('sn_fork_50', '') }}</p>
+        <p><strong>SN Fork 75:</strong> {{ data['ticket_notes'].get('sn_fork_75', '') }}</p>
+        <p><strong>Additional Notes:</strong> {{ data['ticket_notes'].get('officer_notes', '') }}</p>
+    {% endif %}
+</div>
+
+<div class="no-print">
+    <button onclick="window.print()">Print Citation</button>
+    <a href="{{ url_for('modify_citation', ticket_number=data['ticketNumber']) }}" class="button">Modify Citation</a>
+    <a href="{{ url_for('add_notes', ticket_number=data['ticketNumber']) }}" class="button">Add Notes</a>
+</div>
+{% endblock %}

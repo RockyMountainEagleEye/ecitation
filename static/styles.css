@@ -1,0 +1,424 @@
+/* static/styles.css */
+
+/* General Styles */
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+/* Login Page Styles */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.login-box {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 350px;
+    width: 100%;
+}
+
+.logo {
+    max-width: 120px;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 0.5rem;
+    text-align: left;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+input, select, textarea {
+    margin-bottom: 0.75rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    width: 100%;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.error {
+    color: #dc3545;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.company-info {
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
+    color: #666;
+    text-align: center;
+}
+
+fieldset {
+    border: 1px solid #ccc;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+legend {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+/* Header Styles */
+.header {
+    background-color: #fff;
+    padding: 0.5rem;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+}
+
+.header .logo {
+    max-width: 80px;
+}
+
+.header nav {
+    margin-top: 0.5rem;
+}
+
+.header nav a {
+    margin: 0 0.25rem;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.header nav a:hover {
+    text-decoration: underline;
+}
+
+/* Main Content Styles */
+.main {
+    padding: 1rem;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+}
+
+table th, table td {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+table th {
+    background-color: #f9f9f9;
+}
+
+/* Status Styles */
+.status-voided {
+    color: #dc3545; /* Red color */
+    font-weight: bold;
+}
+
+.status-modified {
+    color: #ff9800; /* Orange color */
+    font-weight: bold;
+}
+
+.status-active {
+    color: #28a745; /* Green color */
+    font-weight: bold;
+}
+
+/* No-Print Class */
+.no-print {
+    margin-top: 1rem;
+}
+
+.no-print .button {
+    background-color: #007bff;
+    color: white;
+    padding: 0.5rem;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-right: 0.25rem;
+    font-size: 0.9rem;
+}
+
+.no-print .button:hover {
+    background-color: #0056b3;
+}
+
+/* Error Page Styles */
+.error-page {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.error-page h1 {
+    font-size: 2.5rem;
+    color: #dc3545;
+}
+
+.error-page p {
+    font-size: 1rem;
+}
+
+/* Footer Styles */
+.footer {
+    text-align: center;
+    padding: 0.5rem;
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-size: 0.8rem;
+}
+
+/* Violation Styles */
+.violation {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+/* Citation Print Styles */
+.citation-print {
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 15px;
+    background-color: white;
+}
+
+.citation-print h1, .citation-print h2 {
+    text-align: center;
+    margin: 5px 0;
+}
+
+.citation-print h1 {
+    font-size: 22px;
+}
+
+.citation-print h2 {
+    font-size: 18px;
+    text-decoration: underline;
+}
+
+.citation-section {
+    margin-bottom: 15px;
+}
+
+.citation-section h3 {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 4px;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.citation-section p {
+    margin: 4px 0;
+    font-size: 12px;
+}
+
+.citation-section p strong {
+    font-weight: bold;
+}
+
+.citation-section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+}
+
+.citation-section table th, .citation-section table td {
+    border: 1px solid #ccc;
+    padding: 6px;
+    font-size: 12px;
+    text-align: left;
+}
+
+.citation-section table th {
+    background-color: #f9f9f9;
+}
+
+.legal-disclaimer {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 20px;
+    font-size: 12px;
+}
+
+.logo-print {
+    max-width: 60px;
+    display: block;
+    margin: 0 auto 5px auto;
+}
+
+.status-box {
+    border: 2px solid #dc3545;
+    padding: 8px;
+    margin: 8px 0;
+    background-color: #f8d7da;
+}
+
+.status-box p {
+    margin: 4px 0;
+    font-size: 12px;
+}
+
+/* Tabs Styles */
+.tabs {
+    overflow: hidden;
+    background-color: #f1f1f1;
+    margin-top: 15px;
+    border-bottom: 1px solid #ccc;
+}
+
+.tabs button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 12px;
+    transition: background-color 0.3s;
+    font-size: 14px;
+    margin: 0;
+}
+
+.tabs button:hover {
+    background-color: #ddd;
+}
+
+.tabs button.active {
+    background-color: #ccc;
+    font-weight: bold;
+}
+
+.tabcontent {
+    display: none;
+    padding: 15px 0;
+    border-top: none;
+}
+
+/* Responsive Canvas */
+canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Flash Messages */
+.flashes {
+    list-style-type: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.flashes li {
+    background-color: #ffdddd;
+    color: #d8000c;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-left: 6px solid #f44336;
+}
+
+/* Print Adjustments */
+@media print {
+    body, html {
+        width: 8.5in;
+        height: 11in;
+        margin: 0;
+        padding: 0;
+        background-color: white;
+    }
+    .citation-print {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 10px;
+    }
+    .citation-print h1 {
+        font-size: 18px;
+    }
+    .citation-print h2 {
+        font-size: 16px;
+    }
+    .citation-section h3 {
+        font-size: 14px;
+    }
+    .citation-section p, .citation-section table th, .citation-section table td {
+        font-size: 10px;
+    }
+    .legal-disclaimer {
+        font-size: 10px;
+    }
+    .logo-print {
+        max-width: 50px;
+        margin-bottom: 3px;
+    }
+    .no-print {
+        display: none;
+    }
+    /* Adjust margins and paddings to maximize space */
+    body, html {
+        margin: 0;
+        padding: 0;
+    }
+    .citation-print {
+        padding: 5px;
+    }
+    .citation-section {
+        margin-bottom: 10px;
+    }
+    .citation-section h3 {
+        margin-bottom: 5px;
+    }
+    .citation-section p {
+        margin: 2px 0;
+    }
+    .citation-section table th, .citation-section table td {
+        padding: 4px;
+    }
+    .status-box {
+        padding: 5px;
+        margin: 5px 0;
+    }
+    .status-box p {
+        margin: 2px 0;
+    }
+}
